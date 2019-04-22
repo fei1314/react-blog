@@ -4,9 +4,16 @@ const { createToken, checkAuth } = require('../lib/token')
 
 module.exports = {
   async register(ctx) {
-    const { username, password } = ctx.request.body
-    if (username && password) {
-      const checkUser = await UserModel.findOne({ where: { username } })
+    const { username, password, email } = ctx.request.body
+    if (username && password && email) {
+      const checkUser = await UserModel.findOne({
+        where: {
+          $or: {
+            username,
+            email
+          }
+        }
+      })
       let response
       if (checkUser) {
         response = { code: 400, message: '用户名已被注册' }
@@ -47,7 +54,7 @@ module.exports = {
       const offset = (page - 1) * pageSize
       pageSize = parseInt(pageSize)
 
-      const params = username ? { username: { $like: `%${username}%` } } : {} 
+      const params = username ? { username: { $like: `%${username}%` } } : {}
 
       const data = await UserModel.findAndCountAll({
         attributes: ['id', 'username', 'createdAt'],
@@ -57,7 +64,7 @@ module.exports = {
         limit: pageSize,
         row: true,
         distinct: true,
-        order: [['createdAt', 'DESC']],
+        order: [['createdAt', 'DESC']]
       })
       ctx.body = { code: 200, ...data }
     }

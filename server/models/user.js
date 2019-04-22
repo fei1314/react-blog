@@ -21,6 +21,12 @@ module.exports = (sequelize, dataTypes) => {
         allowNull: false,
         comment: '通过 bcrypt 加密后的密码'
       },
+      email: {
+        type: dataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        comment: 'email'
+      },
       auth: {
         type: dataTypes.TINYINT,
         defaultValue: 2,
