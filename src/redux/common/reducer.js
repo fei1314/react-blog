@@ -4,8 +4,8 @@ import { groupBy, random } from '@/lib'
 // state
 const defaultState = {
   colorList: ['magenta', 'blue', 'red', 'volcano', 'orange', 'gold', 'lime', 'green', 'cyan', 'geekblue', 'purple'], // 标签颜色
-  loginModalVisible: false,
-  registerModalVisible: false,
+  authModalType: 'login',
+  authModalVisible: false,
   windowWidth: 0,
   drawerVisible: false,
   colorMap: {}
@@ -16,10 +16,10 @@ export const commonReducer = (state = defaultState, action) => {
   const { type, payload } = action
   switch (type) {
     case constants.AUTH_OPEN_AUTHMODAL:
-      return { ...state, [`${payload}ModalVisible`]: true }
+      return { ...state, authModalVisible: true, authModalType: payload }
 
     case constants.AUTH_CLOSE_AUTHMODAL:
-      return { ...state, [`${payload}ModalVisible`]: false }
+      return { ...state, authModalVisible: false, authModalType: '' }
 
     case constants.COMMON_GET_WINDOW_WIDTH:
       return { ...state, windowWidth: payload }
